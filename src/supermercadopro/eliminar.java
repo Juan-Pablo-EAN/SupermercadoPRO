@@ -30,6 +30,7 @@ public class eliminar extends javax.swing.JFrame {
         if (seguro.confirm == true) {
             label.setText("¡Empleado eliminado exitosamente!");
         }
+        label.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -161,6 +162,7 @@ public class eliminar extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        label.setText("");
         subprincipal su = new subprincipal();
         su.setVisible(true);
         this.dispose();

@@ -27,8 +27,15 @@ public class perfil extends javax.swing.JFrame {
                 LabelFondo.getHeight(), Image.SCALE_DEFAULT));
         LabelFondo.setIcon(icono);
         this.repaint();
-        
-        titulo.setText("Perfil de " + inicio.name);
+
+        Empleado pe;
+        try {
+            pe = bd.queryForId(inicio.ide);
+            titulo.setText("Perfil de " + pe.getNombre());
+        } catch (SQLException ex) {
+            Logger.getLogger(perfil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         name1.setText(subprincipal.pn);
         cc1.setText(String.valueOf(subprincipal.pcc));
         dpt1.setText(subprincipal.pd);

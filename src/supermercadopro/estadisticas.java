@@ -1,6 +1,10 @@
 package supermercadopro;
 
 import java.awt.Image;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +29,8 @@ public class estadisticas extends javax.swing.JFrame {
                 LabelFondo.getHeight(), Image.SCALE_DEFAULT));
         LabelFondo.setIcon(icono);
         this.repaint();
+
+        oyebox();
     }
 
     @SuppressWarnings("unchecked")
@@ -137,28 +143,37 @@ public class estadisticas extends javax.swing.JFrame {
         this.hide();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String depa = boxdpt.getSelectedItem().toString();
-        long salD = 0;
-        int cant = 0;
-        long salT = 0;
-        int empT = 0;
-        try {
-            for (Empleado es : bd.queryForAll()) {
-                if (es.getDepartamento().equals(depa)) {
-                    salD += es.getSalario();
-                    cant++;
+    public void oyebox() {
+        ItemListener oyente = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent ie) {
+                String depa = boxdpt.getSelectedItem().toString();
+                long salD = 0;
+                int cant = 0;
+                long salT = 0;
+                try {
+                    for (Empleado es : bd.queryForAll()) {
+                        if (es.getDepartamento().equals(depa)) {
+                            salD += es.getSalario();
+                            cant++;
+                        }
+                        salT += es.getSalario();
+                    }
+                    canti.setText(String.valueOf(cant));
+                    sal1.setText("$" + salD);
+                    sal2.setText("$" + salT);
+                    emp2.setText(String.valueOf(bd.countOf()));
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(estadisticas.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                salT += es.getSalario();
             }
-            canti.setText(String.valueOf(cant));
-            sal1.setText("$" + salD);
-            sal2.setText("$" + salT);
-            emp2.setText(String.valueOf(bd.countOf()));
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(estadisticas.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        };
+        boxdpt.addItemListener(oyente);
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {

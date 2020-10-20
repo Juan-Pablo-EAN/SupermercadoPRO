@@ -1,5 +1,6 @@
 package supermercadopro;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -38,8 +39,17 @@ public class subprincipal extends javax.swing.JFrame {
         LabelFondo.setIcon(icono);
         this.repaint();
         
-        String na = inicio.name;
-        welcome.setText("¡Bienvenido " + na + "!");
+        long num = inicio.ide;
+        try {
+            Empleado t = bd.queryForId(num);
+            welcome.setText("¡Bienvenido " + t.getNombre() + "!");
+            if(inicio.vip == true){
+                welcome.setText("Has ingresado con la cuenta VIP");
+                welcome.setForeground(Color.blue);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(subprincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         if (inicio.vip == true) {
             pass.setVisible(true);
@@ -85,7 +95,7 @@ public class subprincipal extends javax.swing.JFrame {
 
         welcome.setFont(new java.awt.Font("Dialog", 1, 21)); // NOI18N
         welcome.setText("Bienvenido");
-        getContentPane().add(welcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
+        getContentPane().add(welcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
 
         jButton1.setBackground(new java.awt.Color(51, 51, 51));
         jButton1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -200,7 +210,7 @@ public class subprincipal extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
             for (Empleado pe : bd.queryForAll()) {
-                if (pe.getNombre().endsWith(inicio.name)) {
+                if (pe.getCedula() == inicio.ide) {
                     pn = pe.getNombre();
                     pcc = pe.getCedula();
                     pco = pe.getCorreo();

@@ -174,13 +174,29 @@ public class cambiarDatos extends javax.swing.JFrame {
         String nCargo = mCargo.getSelectedItem().toString();
         long nSalario = Long.parseLong(mSalario.getText());
 
-        Empleado ec = new Empleado(nNombre, nCedula, "", nDepart,
-                nCargo, nSalario, null);
-        try {
-            bd.update(ec);
+        if (nCargo.equals("Jefe") || nCargo.equals("Administrador")) {
+            String cor = "";
+            String con = "";
+            try {
+                Empleado ej = bd.queryForId(nCedula);
+                cor = ej.getCorreo();
+                con = ej.getPassword();
+                Empleado ec = new Empleado(nNombre, nCedula, cor, nDepart,
+                        nCargo, nSalario, con);
+                bd.update(ec);
+                JOptionPane.showMessageDialog(null, "¡Cambios guardados exitosamente!");
+            } catch (SQLException ex) {
+                Logger.getLogger(cambiarDatos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            Empleado ed = new Empleado(nNombre, nCedula, "", nDepart,
+                    nCargo, nSalario, null);
+            try {
+                bd.update(ed);
+            } catch (SQLException ex) {
+                Logger.getLogger(cambiarDatos.class.getName()).log(Level.SEVERE, null, ex);
+            }
             JOptionPane.showMessageDialog(null, "¡Cambios guardados exitosamente!");
-        } catch (SQLException ex) {
-            Logger.getLogger(cambiarDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

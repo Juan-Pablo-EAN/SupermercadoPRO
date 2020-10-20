@@ -23,7 +23,7 @@ public class inicio extends javax.swing.JFrame {
 
     static Dao<Empleado, Long> bd; //Long con L mayuscula porque el identificador es de tipo long
     private boolean acceso = false;
-    static String name = "";
+    static long ide;
     static boolean vip = false;
 
     public inicio() {
@@ -152,16 +152,15 @@ public class inicio extends javax.swing.JFrame {
             long iCedula = Long.parseLong(iCC.getText().trim()); //.trim para quitar los espacios a los laterales
             try {
                 Empleado ei = bd.queryForId(iCedula);
+                String iPassword = iPass.getText().trim();
                 try {
-                    String iPassword = iPass.getText().trim();
                     if (iCedula == 147258369 && iPassword.equals("mkonjibhuvgy")) {
                         vip = true;
-                        subprincipal iniciar = new subprincipal();
-                        iniciar.setVisible(true);
-                        this.hide();
+                    } else {
+                        vip = false;
                     }
                     if (ei.getPassword().equals(iPassword)) {
-                        name = ei.getNombre();
+                        ide = ei.getCedula();
                         acceso = true;
                     } else if ("Domiciliario".equals(ei.getCargo()) || "Cajero".equals(ei.getCargo())
                             || "Distribuidor".equals(ei.getCargo())) {
@@ -173,17 +172,16 @@ public class inicio extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "¡El empleado con la cèdula " + iCedula + " no està registrado");
+                    JOptionPane.showMessageDialog(null, "¡El empleado con la cédula " + iCedula + " no está registrado");
                     System.out.println(e);
                 }
-
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "¡Ha ocurrido un error! Vuelve a intentarlo");
                 System.out.println(ex);
             }
-            if (acceso == true) {
-                subprincipal iniciar = new subprincipal();
-                iniciar.setVisible(true);
+            if (acceso == true || vip == true) {
+                subprincipal in = new subprincipal();
+                in.setVisible(true);
                 this.hide();
             }
         } else {
@@ -193,7 +191,7 @@ public class inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) throws SQLException {
-
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
